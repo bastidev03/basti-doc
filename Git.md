@@ -34,3 +34,23 @@
 > git config --global user.name bastidev03
 > git config --global user.email sebastien.molaire@laposte.net
 >```
+
+### `git init` : Création d'un repository local vierge
+
+>### Syntaxe : 
+>
+>- **Création d'un nouveau repository dans un dossier spécifique**
+>
+>   `git init (<path_to_directory>)` : Si le path n'est pas spécifié, le repo est créé à l'endroit où est ouvert le terminal 
+
+### `git clone` : Récupération en local d'un repository existant (local ou distant)
+
+>### Syntaxes : 
+>
+>- **Récupération d'un repository local**
+>
+>    `git clone <path_to_repo_to_clone>`
+>
+>- **Récupération d'un repository distant**
+>
+>    `git clone <url_to_repo_to_clone>`
