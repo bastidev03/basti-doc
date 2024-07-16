@@ -54,3 +54,17 @@
 >- **Récupération d'un repository distant**
 >
 >    `git clone <url_to_repo_to_clone>`
+
+## Commandes de gestion instantanée de l'espace de travail (entre 2 commits)
+
+### `git status` : Monitorer l'état de l'espace de travail
+
+Les fichiers de l'espace de travail peuvent se trouver dans 4 états différents : 
+
+1. `Non-suivis` : Ces fichiers ne sont pas stockés dans l'arbre de versionnage, leurs modifications ne sont jamais suivies et il ne seront pas récupérés lors d'un `git clone` du projet par un tiers.
+
+2. `Suivis-non-modifiés` : Ces fichers sont stockés dans l'arbre de versionnage (suite à un précédent commit), et n'ont pas été modifiés au sein de l'édition courante
+
+3. `Suivis-modifiés-non-indexés` : Ces fichiers se trouvent dans l'arbre de versionnage, leur contenu a été modifié depuis le précédent commit, mais ces modifications n'ont pas encore été indexées et ne seront pas prises en compte lors d'un futur commit.  
+
+4. `Suivis-modifiés-indexés` : Ces fichiers se trouvent dans l'arbre de versionnage, leur contenu a été modifié depuis le précédent commit, ces modifications ont été indexées et seront prises en compte lors du futur commit.
