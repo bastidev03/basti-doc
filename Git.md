@@ -35,6 +35,8 @@
 > git config --global user.email sebastien.molaire@laposte.net
 >```
 
+<br/>
+
 ### `git init` : Création d'un repository local vierge
 
 >### Syntaxe : 
@@ -42,6 +44,8 @@
 >- **Création d'un nouveau repository dans un dossier spécifique**
 >
 >   `git init (<path_to_directory>)` : Si le path n'est pas spécifié, le repo est créé à l'endroit où est ouvert le terminal 
+
+<br/>
 
 ### `git clone` : Récupération en local d'un repository existant (local ou distant)
 
@@ -55,7 +59,7 @@
 >
 >    `git clone <url_to_repo_to_clone>`
 
-## Commandes de gestion instantanée de l'espace de travail (entre 2 commits)
+## Commandes de gestion instantanée de la révision courante de l'espace de travail (entre 2 commits)
 
 ### `git status` : Monitorer l'état des fichiers de l'espace de travail
 
@@ -75,6 +79,8 @@ Les fichiers de l'espace de travail peuvent se trouver dans 4 états différents
 >
 >    `git status (--short)` : Le --short est fait pour avoir un affichage syntétique
 
+<br/>
+
 ### `git add` : Ajouter des fichiers/modifications à l'index de commit (stash)
 
 **Toujours exécuter cette commande avant de faire un commit, sinon les modifications ne seront pas prises en compte et seront perdues...** 
@@ -93,9 +99,43 @@ Les fichiers de l'espace de travail peuvent se trouver dans 4 états différents
 >
 >   `git add *<pattern>` : Exemple : `git add *.txt`
 
-### `git rm`
+<br/>
 
-### `git restore` : Annuler des modifications / Retirer des fichiers de l'index
+### `git mv` : Déplacer/Renommer un fichier
+
+Cette commande simule les actions simultanées de suppression du fichier source et d'ajout d'une copie de ce fichier sous un autre nom ou autre path. Le résultat de la commande est directement ajouté à l'index de commit.
+
+>### Syntaxes : 
+>
+>- **Renommage d'un fichier**
+> 
+>   `git mv <current_name> <new_name>`
+>
+>- **Déplacement d'un fichier**
+> 
+>   `git mv <current_name> <new_path>/<current_name>` : On peut décider de changer le nom du fichier cible au passage
+>
+>- **Renommage/Déplacement d'un fichier avec écrasement d'un fichier cible ayant le même nom**
+>
+>   `git mv --force <current_name> <new_name>` : Attention cette action est risquée...
+> 
+>- **Annulation de la suppression du fichier source après un déplacement/renommage**
+>
+>   `git restore --staged --worktree <initial_name>` : ça permet également de simuler un copier/coller.
+
+>### <u>**Attention :**</u>
+>
+>- Ne pas renommer un fichier directement avec l'explorateur de fichier car git ne va pas le répertorier comme une action de renommage. Il va considérer que c'est une suppression de l'ancien fichier et de l'ajout d'un nouveau.
+>
+>- Bien penser à commit le renommage avant de modifier le fichier, sinon git va considérer que c'est une suppression de l'ancien fichier et de l'ajout d'un nouveau.
+
+<br/>
+
+### `git rm` : Supprimer un fichier de l'arbre de versionnage/espace de travail
+
+<br/>
+
+### `git restore` : Annuler des modifications-suppressions / Retirer des fichiers de l'index
 
 Depuis la version 2.23 de git, c'est cette commande qui est préférée pour annuler des modifications dans l'espace de travail, car elle est plus "safe". Avant l'existence de celle-ci, on utilisait `git reset`, mais c'est plus risqué car `git reset` peut aussi modifier l'historique de commit, alors que `git restore` non.
 
