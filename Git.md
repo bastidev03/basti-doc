@@ -133,6 +133,28 @@ Cette commande simule les actions simultanées de suppression du fichier source 
 
 ### `git rm` : Supprimer un fichier de l'arbre de versionnage/espace de travail
 
+>### Syntaxes : 
+>
+>- **Suppression d'un fichier versionné non modifié dans la révision courante**
+> 
+>   `git rm <file_path>` : Cela supprime également le fichier de l'espace de travail.
+>
+>- **Suppression d'un fichier versionné modifié dans la révision courante**
+> 
+>   `git rm --force <file_path>` : Cela supprime également le fichier de l'espace de travail.
+>
+>- **Retrait d'un fichier de l'arbre de versionnage**
+> 
+>   `git rm --cached <file_path>` : Le fichier est toujours présent dans l'espace de travail, mais il se retrouve dans un état `non-suivi`.
+>
+>- **Suppression d'un dossier**
+>
+>  `git rm <directory_path>` : TODO 
+
+>### <u>**Attention :**</u>
+>
+>Lorsque les fichiers sont supprimés de l'espace de travail par la commande `git rm`, les fichiers sont supprimés du système sans passer par la corbeille (On peut quand même les récupérer depuis les commits précédents).
+
 <br/>
 
 ### `git restore` : Annuler des modifications-suppressions / Retirer des fichiers de l'index
