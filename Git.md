@@ -163,7 +163,7 @@ Les suppressions sont directement ajoutées à l'index de commit.
 
 Depuis la version 2.23 de git, c'est cette commande qui est préférée pour annuler des modifications dans l'espace de travail, car elle est plus "safe". Avant l'existence de celle-ci, on utilisait `git reset`, mais c'est plus risqué car `git reset` peut aussi modifier l'historique de commit, alors que `git restore` non.
 
->### Syntaxe : 
+>### Syntaxes : 
 >
 >- **Annulation des modifications `non-indexées` d'un fichier**
 >
@@ -184,7 +184,7 @@ git reset pour annuler des modifications déjà commitées (reset peut modifier 
 
 ### `git commit` : Valider la révision courante et l'ajouter à l'ajouter comme nouvelle entrée dans la branche courante
 
->### Syntaxe : 
+>### Syntaxes : 
 >
 >- **Commit de tous les fichiers indexés**
 >
@@ -198,4 +198,24 @@ git reset pour annuler des modifications déjà commitées (reset peut modifier 
 >
 >   `git commit <file_name> -m "<commit_message>` : Les autres modifications restent indexées pour le prochain commit.
 
+## Commandes de gestion des branches et de l'arbre de versionnage
 
+### `git log` : Visualiser l'historique des commits sur une branche donnée
+
+>### Syntaxes : 
+>
+>- **Visualisation de tous les commits**
+>
+>   `git log` : Le 1er log affiché est le plus récent
+>
+>- **Visualisation de tous les commits concernant un fichier donné seulement**
+>
+>   `git log <file_name>`
+
+<br>
+
+### `git reset` : Remettre la branche courante dans un état donné (annuler certains commits) 
+
+<br/>
+
+### `git branch` : Visualiser / Créer / Supprimer des branches dans l'arbre de versionnage
