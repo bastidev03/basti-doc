@@ -81,7 +81,7 @@ Les fichiers de l'espace de travail peuvent se trouver dans 4 états différents
 
 <br/>
 
-### `git add` : Ajouter des fichiers/modifications à l'index de commit (stash)
+### `git add` : Ajouter des fichiers/modifications à l'index de commit (stage)
 
 **Toujours exécuter cette commande avant de faire un commit, sinon les modifications ne seront pas prises en compte et seront perdues...** 
 
@@ -179,3 +179,23 @@ Depuis la version 2.23 de git, c'est cette commande qui est préférée pour ann
 
 
 git reset pour annuler des modifications déjà commitées (reset peut modifier l'historique de commit)
+
+<br/>
+
+### `git commit` : Valider la révision courante et l'ajouter à l'ajouter comme nouvelle entrée dans la branche courante
+
+>### Syntaxe : 
+>
+>- **Commit de tous les fichiers indexés**
+>
+>   `git commit -m "<commit_message>"` : Le message de commit est obligatoire. Les modifications qui n'ont pas été ajoutées à l'index ne sont pas perdues et sont gardées pour le commit suivant (si on les add).
+>
+>- **Commit des fichiers indexés ET des fichiers suivis modifiés-non-indexés (git add oublié)** 
+>
+>   `git commit -a -m "<commit_message>"` : Les fichiers non-suivis ne sont pas ajoutés au commit.
+>
+>- **Commit d'un fichier en particulier seulement**
+>
+>   `git commit <file_name> -m "<commit_message>` : Les autres modifications restent indexées pour le prochain commit.
+
+
