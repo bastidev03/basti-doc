@@ -89,7 +89,7 @@ Les fichiers de l'espace de travail peuvent se trouver dans 4 états différents
 >
 >- **Ajout d'un nouveau fichier ou d'une modification d'un fichier existant**
 >
->    `git add <path_to_file>`
+>    `git add <path_to_file>` : Quand on ajoute un dossier, tous les fichiers et sous-dossiers sont ajoutés récursivement
 >
 >- **Ajout de tous les éléments possibles**
 > 
@@ -133,6 +133,8 @@ Cette commande simule les actions simultanées de suppression du fichier source 
 
 ### `git rm` : Supprimer un fichier de l'arbre de versionnage/espace de travail
 
+Les suppressions sont directement ajoutées à l'index de commit.
+
 >### Syntaxes : 
 >
 >- **Suppression d'un fichier versionné non modifié dans la révision courante**
@@ -149,7 +151,7 @@ Cette commande simule les actions simultanées de suppression du fichier source 
 >
 >- **Suppression d'un dossier**
 >
->  `git rm <directory_path>` : TODO 
+>  `git rm -r <directory_path> ` : Il faut spécifier le -r pour supprimer le dossier et son contenu récursivement (ce n'est pas implicite par sécurité) 
 
 >### <u>**Attention :**</u>
 >
@@ -157,7 +159,7 @@ Cette commande simule les actions simultanées de suppression du fichier source 
 
 <br/>
 
-### `git restore` : Annuler des modifications-suppressions / Retirer des fichiers de l'index
+### `git restore` : Annuler des modifications-suppressions / Retirer des fichiers de l'index de commit
 
 Depuis la version 2.23 de git, c'est cette commande qui est préférée pour annuler des modifications dans l'espace de travail, car elle est plus "safe". Avant l'existence de celle-ci, on utilisait `git reset`, mais c'est plus risqué car `git reset` peut aussi modifier l'historique de commit, alors que `git restore` non.
 
