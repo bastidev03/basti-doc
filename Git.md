@@ -307,8 +307,9 @@ Cette fonction permet de supprimer/annuler des commits jusqu'à un hash de commi
 > 
 >    - Pour retrouver le bon <reference_number>, utiliser la commande `git reflog`. 
 
-
 <br/>
+
+### `git revert` : Ajouter un commit qui annule des commits précédents
 
 ### `git branch` : Visualiser / Créer / Supprimer des branches dans l'arbre de versionnage
 
