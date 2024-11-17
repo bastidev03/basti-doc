@@ -1,0 +1,13 @@
+********** Things to learn to improve my dev value **********
+
+# Php
+    * Psr4 best practices
+    * Composer
+    * Symfony
+    * Php 8 syntax
+
+# Docker
+
+# Git
+
+# VSCode productivity
