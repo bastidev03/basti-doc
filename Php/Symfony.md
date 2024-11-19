@@ -39,3 +39,30 @@ symfony server:log
 symfony server:stop
 ```
 >**Remarque :** L'utilisation la commande `symfony server` peut se faire également sur un projet `PHP` sans le framework `symfony` installé dessus.
+
+## Commandes symfony-CLI utiles 
+
+```powershell
+# Création d'un contrôleur http dans 'src/Controller/<ControllerName>.php'  avec une route par défaut '/'
+symfony console make:controller <ControllerName>
+```
+
+## Fonctions php utilitaires définies par symfony
+
+### Envoi de logs serveurs dans la console de debug symfony
+```php
+array $var = ['test' => 'value'];
+
+//Fonction permettant de logger des éléments serveurs dans la console frontend symfony
+dump($var);
+```
+
+## Principaux Concepts et Classes/Namespaces prédéfinis
+
+### HTTP foundations
+
+> Groupement de Classes PHP pré-définies par `Symfony` pour gérer tout ce qui concerne les requêtes HTTP en POO :
+> - Récupération des données de requête de $_REQUEST, $_POST, $_FILES, ...
+> - Gestion des headers, sessions ...
+> - Génération des réponses renvoyées au client  
+>
