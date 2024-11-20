@@ -40,11 +40,40 @@ symfony server:stop
 ```
 >**Remarque :** L'utilisation la commande `symfony server` peut se faire également sur un projet `PHP` sans le framework `symfony` installé dessus.
 
+
+## Principaux Concepts et Classes/Namespaces prédéfinis
+
+### HTTP foundations
+
+> Groupement de Classes PHP pré-définies par `Symfony` pour gérer tout ce qui concerne les requêtes HTTP en POO :
+> - Récupération des données de requête de $_REQUEST, $_POST, $_FILES, ...
+> - Gestion des headers, sessions ...
+> - Génération des réponses renvoyées au client  
+>
+
+Principales classes HTTP foundations :
+```php
+//Classe Response => Génère une réponse HTTP
+use Symfony\Component\HttpFoundation\Response;
+
+//Classe Request => Récupère une requête HTTP
+use use Symfony\Component\HttpFoundation\Request;
+```
+
 ## Commandes symfony-CLI utiles 
 
 ```powershell
-# Création d'un contrôleur http dans 'src/Controller/<ControllerName>.php'  avec une route par défaut '/'
+# Création d'un Contrôleur http dans 'src/Controller/<ControllerName>.php'  avec une route par défaut '/'
 symfony console make:controller <ControllerName>
+
+# Visualisation de toutes les routes définies dans l'App
+symfony console debug:router
+
+# Visualisation de la configuration d'une route en particulier
+symfony console debug:router <RouteName>
+
+# Trouver une route associée à un path navigateur (URL)
+symfony console router:match <PathName>
 ```
 
 ## Fonctions php utilitaires définies par symfony
@@ -56,13 +85,3 @@ array $var = ['test' => 'value'];
 //Fonction permettant de logger des éléments serveurs dans la console frontend symfony
 dump($var);
 ```
-
-## Principaux Concepts et Classes/Namespaces prédéfinis
-
-### HTTP foundations
-
-> Groupement de Classes PHP pré-définies par `Symfony` pour gérer tout ce qui concerne les requêtes HTTP en POO :
-> - Récupération des données de requête de $_REQUEST, $_POST, $_FILES, ...
-> - Gestion des headers, sessions ...
-> - Génération des réponses renvoyées au client  
->
