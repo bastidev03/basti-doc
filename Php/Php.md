@@ -89,3 +89,5 @@ function get_noise(Animal $animal)
 $animal = new Dog();
 get_noise($animal);
 ```
+
+## Accesseurs (Getters) et mutateurs (Setters)
