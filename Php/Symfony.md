@@ -91,32 +91,178 @@ use Symfony\Component\HttpFoundation\Request;
 > - Définition de la clé primaire
 > - Définition des éventuelles clés étrangères
 >
->**Chaque élément de donnée (ligne de donnée) issu de la table en question, est récupéré par Doctrine dans une instance de la classe `entity` en question.**
+>Chaque élément de donnée (ligne de donnée) issu de la table en question, est récupéré par Doctrine dans une instance de la classe `entity` en question.
 >
->**C'est donc là que l'on définie l'`API` de lecture des données de la table.**
+>Si des éléments de données sont liés à cette `entity` par clé étrangère dans une autre table (autre `entity`), Doctrine récupère également automatiquement dans une `collection` (liste/array), la liste des instances de cette autre`entity` qui lui sont associées.
 >
->**C'est également ce fichier de définition qui sert à créer/modifier la table en question dans la BDD gâce à la commande `symfony doctrine orm:schema-tool:<create/update/drop>`**
+>C'est donc là que l'on définie l'`API` de lecture des données de la table.
+>
+>C'est également ce fichier de définition qui sert à créer/modifier la table en question dans la BDD gâce à la commande `symfony doctrine orm:schema-tool:<create/update/drop>`
+>
+>Quand une propriété d'une `entity` liée à un champ de table est modifiée, Doctrine modifie automatiquement le champ correspondant dans la table quand la méthode `flush()` de l'`entity manager` sera exécutée
 
-Exemple de définition d'une classe entity dans Symfony avec les attributs :
+Exemple de définition de 2 classes `entity` dans Symfony liées par une clé étrangère dans une relation (1,n) en utilisant les attributs :
 ```php
 <?php
-// src/Entity/Product.php
+//Use case : 
+//Imagineons 2 tables (persons et products)
+// 1 Personne peut posséder plusieurs produits
+// 1 Produit ne peut être associé qu'à 1 seule Personne
+//Dans le modèle cible de la BDD, on veut avoir une clé étrangère dans la table products qui référence l'id de son possesseur
 
+// src/Entity/Person.php
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'persons')]
+class Person
+{
+    //Spécifie qu'il s'agit de la clé primaire
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    //Spécifie qu'à l'insertion d'un nouveau Product, ce champ est calculé automatiquement
+    #[ORM\GeneratedValue]
+    private int|null $id = null;
+    
+    //Les propriétés utilisées pour définir des champs de table doivent TOUJOURS être privées
+    #[ORM\Column(type: 'string')]
+    private $first_name = '';
+
+    //Mise en place des assesseurs / mutateurs sur cette propriété
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+    public function setFirstName(string $first_name): void
+    {
+        $this->first_name = $first_name;
+    }
+
+    #[ORM\Column(type: 'string')]
+    private $last_name = '';
+
+    public function getLastName(): string
+    {
+        return $this->last_name;
+    }
+    public function setLastName(string $last_name): void
+    {
+        $this->last_name = $last_name;
+    }
+
+    //La clé étrangère est dans la table 'products', donc l'entity 'Person' est du côté 'inverse' de la relation ('Inverse side')
+    //Une Collection dans la modélisation de l'entity 'inverse' regroupe nativement la liste des éléments liés par la clé étrangère dans l'entity 'propriétaire'
+    //Quand on récupère une instance d'une entity, elle possède donc déjà la liste des éléments qui lui sont liés par clé étrangère (La jointure est faite automatiquement pendant le construct)
+    //On spécifie que l'entité 'propriétaire' est Product et que la clé étrangère se trouve sur la propriété 'owner'
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy:'owner')]
+    private Collection $product_list;
+
+    public function getProductList() : Collection
+    {
+        return $this->product_list;
+    }
+    //Pour apporter des changements dans une collection, il faut aller ajouter/modifier l'entity dans l'entity 'propriétaire'
+    //Modifier une collection (ou les entities présentes dans cette collection) depuis une entity 'inverse' n'enregistrera JAMAIS les changements en BDD
+    public function addProduct(Product $product): void 
+    {
+        //!! USELESS => THE DATA WILL NOT PERSIST INTO BDD !!
+        $this->product[] = $product;
+    }
+
+}
+
+// src/Entity/Product.php
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'products')]
 class Product
 {
+    
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
     private int|null $id = null;
+
     #[ORM\Column(type: 'string')]
     private string $name;
 
-    // .. (other code)
+    public function getName(): string
+    {
+        return $this->name;
+    }
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    #[ORM\Column(type: 'float')]
+    private string $price;
+
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
+    }
+
+    //La clé étrangère est dans la table 'products', donc l'entité 'Product' est du côté 'propriétaire' de la relation ('Owning side')
+    //TODO: Ajouter l'attribut ORM de foreign key
+    private Person $owner
+    
+    public function getOwner(): Person
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(Person $owner): void
+    {
+        $this->owner = $owner;
+    }
 }
 ```
 
 ### Repositories de l'ORM Doctrine
+>Un `repository` de l'ORM Doctrine est une classe associée à une classe `entity` d'une table, et qui stocke toutes les actions métiers liées à cette `entity`.
+>
+>Chaque `repository` est étendu à partir d'une classe Doctrine commune, et possède des méthodes génériques pour effectuer des actions `CRUD` récurrentes.
+>
+>Ce sont dans ces `repositories` que sont également implémentées les méthodes métier spécifiques à cette `entity`
+>
+>**Ce sont les repositories qui sont utilisés par les contrôleurs métiers pour interagir avec la BDD**
+
+Exemple de défintion d'une classe `repository` dans symfony : 
+```php
+<?php
+// src/repository/BugRepository.php
+
+use Doctrine\ORM\EntityRepository;
+
+class BugRepository extends EntityRepository
+{
+    //Exemple de méthodes spécifiques implémentées pour matcher une demande métier sur cette entité 
+    public function getRecentBugs($number = 30)
+    {
+        //Généralement dans doctrine, les requêtes sont écrites en DQL (Doctrine Query Language)
+        $dql = "SELECT b, e, r FROM Bug b JOIN b.engineer e JOIN b.reporter r ORDER BY b.created DESC";
+
+        //C'est l'instance partagée entityManager() qui sert systématiquement de pont avec la BDD.
+        $query = $this->getEntityManager()->createQuery($dql);
+        $query->setMaxResults($number);
+        //La méthode getResult() renvoie la liste des instances de la classe entité Bug dans un array
+        return $query->getResult();
+    }
+
+    public function getRecentBugsArray($number = 30)
+    {
+        $dql = "SELECT b, e, r, p FROM Bug b JOIN b.engineer e ".
+               "JOIN b.reporter r JOIN b.products p ORDER BY b.created DESC";
+        $query = $this->getEntityManager()->createQuery($dql);
+        $query->setMaxResults($number);
+        return $query->getArrayResult();
+    }
+}
+```
