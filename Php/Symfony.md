@@ -46,6 +46,9 @@ symfony server:stop
 # Création d'un Contrôleur http dans 'src/Controller/<ControllerName>.php'  avec une route par défaut '/'
 symfony console make:controller <ControllerName>
 
+# Création d'une entity Doctrine et de son repository 
+symfony console make:entity <EntityName>
+
 # Visualisation de toutes les routes définies dans l'App
 symfony console debug:router
 
@@ -153,9 +156,10 @@ class Person
 
     //La clé étrangère est dans la table 'products', donc l'entity 'Person' est du côté 'inverse' de la relation ('Inverse side')
     //Une Collection dans la modélisation de l'entity 'inverse' regroupe nativement la liste des éléments liés par la clé étrangère dans l'entity 'propriétaire'
-    //Quand on récupère une instance d'une entity, elle possède donc déjà la liste des éléments qui lui sont liés par clé étrangère (La jointure est faite automatiquement pendant le construct)
-    //On spécifie que l'entité 'propriétaire' est Product et que la clé étrangère se trouve sur la propriété 'owner'
-    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy:'owner')]
+    //Quand on récupèrera l'instance de l'entity Person, on aura automatiquement dans la propriété product_list, la liste des instances de l'entité Product associées et stockées dans une ArrayCollection (La jointure est faite automatiquement pendant le construct)
+    //On spécifie que du point de vue de l'entité Person, on est dans une relation 'OneToMany' avec l'entité Product
+    //On spécifie que l'entity 'propriétaire' est Product et que la clé étrangère se trouve sur la propriété 'owner'
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy:'owner')]
     private Collection $product_list;
 
     public function getProductList() : Collection
@@ -163,11 +167,15 @@ class Person
         return $this->product_list;
     }
     //Pour apporter des changements dans une collection, il faut aller ajouter/modifier l'entity dans l'entity 'propriétaire'
-    //Modifier une collection (ou les entities présentes dans cette collection) depuis une entity 'inverse' n'enregistrera JAMAIS les changements en BDD
+    //Ajouter ou supprimer une entity dans une collection depuis une entity 'inverse' n'enregistrera JAMAIS les changements en BDD
     public function addProduct(Product $product): void 
     {
-        //!! USELESS => THE DATA WILL NOT PERSIST INTO BDD !!
-        $this->product[] = $product;
+        //!! USELESS => THE DATA WILL NOT PERSIST INTO BDD BY THIS ACTION ONLY!!
+        $this->product_list->add($product);
+
+        //!!THIS WILL WORK!!
+        $this->product_list->add($product);
+        $product->setOwner($this);
     }
 
 }
@@ -210,7 +218,12 @@ class Product
     }
 
     //La clé étrangère est dans la table 'products', donc l'entité 'Product' est du côté 'propriétaire' de la relation ('Owning side')
-    //TODO: Ajouter l'attribut ORM de foreign key
+    //Quand on récupèrera l'instance de l'entity Product, on aura automatiquement dans la propriété owner, l'instance de l'entity Person associée (La jointure est faite automatiquement pendant le construct).
+    //On spécifie que du point de vue de l'entité Product, on est dans une relation 'ManyToOne' avec l'entité Person
+    //On spécifie que l'entity 'inverse' est Person et que la propriété dans l'entity Person qui fait référence à cette clé étrangère est 'product_list'
+    //On peut rajouter des propriétés de jointure avec l'attribut JoinColumn (opt)
+    #[ORM\ManyToOne(targetEntity: Person::class, inversedBy: 'product_list')]
+    #[ORM\JoinColumn(nullable: false)]
     private Person $owner
     
     public function getOwner(): Person
