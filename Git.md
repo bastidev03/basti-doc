@@ -1,5 +1,9 @@
 # Principales commandes de Git
 
+## Raccourcis de la CLI
+
+### `q` : Permet de sortir de l'interface d'une commande Git (Après un `git log` par ex)
+
 ## Commandes globales  
 
 ### `git config` : Gérer les configurations par défaut de git (globalement ou localement)
@@ -249,7 +253,7 @@ Depuis la version 2.23 de git, c'est cette commande qui est préférée pour ann
 
 <br>
 
-## Commandes de gestion des branches et de l'arbre de versionnage
+## Commandes de gestion de l'arbre de versionnage courant (Branche courante)
 
 ### `git log` : Visualiser l'historique des commits sur une branche donnée
 
@@ -309,7 +313,55 @@ Cette fonction permet de supprimer/annuler des commits jusqu'à un hash de commi
 
 <br/>
 
-### `git revert` : Ajouter un commit qui annule des commits précédents
+### `git revert` : Ajouter un commit qui annule un commit antérieur
+
+Cette fonction permet d'exécuter l'action inverse d'un commit antérieur pour en annuler les modifications.
+
+>### <u>**Attention :**</u>
+>
+>- Lorsque le commit que l'on `revert` n'est pas le dernier commit, des risques de conflits peuvent survenir.
+>
+>- **S'assurer que l'`index` de la révision courante est bien vide**, car sinon, le `commit` automatique de la commande `revert` se mettra en erreur. (Si utilisation du param `no-commit`, les modifications `indexées` passeront dans le `commit` manuel effectué après la commande `revert`) 
+
+
+>### Syntaxes :
+>
+>- **Annulation d'un commit unique**
+>
+>   **`git revert <commit_hash> --no-edit`**
+>
+>      - Le paramètre `no-edit` permet à git de générer un message automatique pour le commit. (C'est mieux, car ça évite l'ouverture d'un éditeur de message de commit qui ne fonctionne pas toujours très bien).
+>
+>      - Les modifications courantes `non-indexées` sont conservées après le commit du `revert`
+>
+>-  **Annulation d'un commit dont on veut personnaliser le message**
+>
+>       **`git revert <commit_hash> --no-commit`**
+>
+>       **`git commit -m "<message>"`**
+>
+>       - Les modifications se retrouvent `indexées` dans la révision courante
+>       - ça évite l'utilisation de l'éditeur de message défectueux
+>
+>-   **Annulation de plusieurs commits dans un seul commit de revert**
+>
+>       **`git revert <commit_hash_1> --no-commit`**
+>
+>       **`...`**
+>
+>       **`git revert <commit_hash_n> --no-commit`**
+>
+>       **`git commit -m "<message>"`**
+>
+>       - On ajoute ainsi successivement les annulations dans des commits successifs dans l'index courant avant de commit le revert global.
+>
+>-   **Annulation d'un commit de merge**
+>
+>       **`git revert <commit_hash> -m <parent_number>`**
+>
+>       - TODO : Commande a tester pour RETEX (Définition de parent_number, modifications ultérieures non prises en compte)
+
+## Commandes de gestion des branches
 
 ### `git branch` : Visualiser / Créer / Supprimer des branches dans l'arbre de versionnage
 
