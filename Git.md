@@ -79,6 +79,8 @@
 >
 >    **`git clone <url_to_repo_to_clone>`**
 
+<br>
+
 ## Commandes de gestion instantanée de la révision courante de l'espace de travail (entre 2 commits)
 
 ### `git status` : Monitorer l'état des fichiers de l'espace de travail
@@ -255,19 +257,42 @@ Depuis la version 2.23 de git, c'est cette commande qui est préférée pour ann
 
 ## Commandes de gestion de l'arbre de versionnage courant (Branche courante)
 
-### `git log` : Visualiser l'historique des commits sur une branche donnée
+### `git log` : Visualiser l'historique des commits du projet dans la console
+
+Cette commande permet également de visualiser dans la console le graphe de toutes les branches du projet
 
 >### Syntaxes : 
 >
->- **Visualisation de tous les commits avec leur hash associé**
+>- **Visualisation de tous les commits de la branche courante avec leur hash associé**
 >
->   **`git log`** : 
+>   **`git log`**
+>
+>   **`git log --oneline`**
 >
 >   - Le 1er log affiché est le plus récent
+>   - Le paramètre `oneline` permet d'avoir un affichage plus compact des lignes de commit
 >
 >- **Visualisation de tous les commits concernant un fichier donné seulement**
 >
 >   **`git log <file_name>`**
+>
+>- **Visualisation du graphe des branches complet du projet (avec leurs commits associés)**
+>
+>   **`git log --all --graph --decorate --oneline`**
+
+<br>
+
+### `gitk` : Ouvrir l'interface graphique de visualisation de l'arbre du projet
+
+Cette interface graphique affiche toutes les informations concernant l'historique du projet (arbre des branches, visualisation des modifications apportées à chaque commit, modifications courantes non commitées ...)
+
+> ### Syntaxes :
+>
+>- **Visualisation du graphe des branches complet du projet (avec leurs commits associés)**
+>
+>   **`gitk --all`**  
+
+> Il existe des interfaces graphiques locales de gestion des `repositories` Git plus complètes que l'interface `gitk` native (GitKraken, SourceTree, GitHub Desktop, ...). Ces logiciels ne seront pas abordés ici.
 
 <br>
 
@@ -361,7 +386,39 @@ Cette fonction permet d'exécuter l'action inverse d'un commit antérieur pour e
 >
 >       - TODO : Commande a tester pour RETEX (Définition de parent_number, modifications ultérieures non prises en compte)
 
+<br/>
+
 ## Commandes de gestion des branches
 
 ### `git branch` : Visualiser / Créer / Supprimer des branches dans l'arbre de versionnage
 
+>### Syntaxes : 
+>
+>- **Visualisation des branches du projet en local**
+>
+>   **`git branch --list`**
+>
+>- **Visualisation des branches du/des projet(s) distant(s)**
+>
+>   **`git branch --remotes`**
+>
+>- **Création d'une nouvelle branche à partir de l'endroit où l'on se trouve (branche et commit commit courant)**
+>
+>   **`git branch <branch_name>`**
+>
+>- **Renommage d'une branche**
+>
+>   **`git branch -m <source_branch_name> <target_branch_name>`**
+>
+>    - Si **un seul** paramètre est spécifié, c'est la branche sur laquelle on se trouve qui sera renommée avec la valeur du paramètre
+>
+>- **Copie d'une branche**
+>
+>   **`git branch -c <source_branch_name> <target_branch_name>`**
+>
+>    - Si un seul paramètre est spécifié, c'est la branche sur laquelle on se trouve qui sera copiée avec la valeur du paramètre
+>    - **Attention :** Ne pas confondre la copie d'une branche, avec la création d'une nouvelle branche à partir d'une autre (Le point de `fork` ne sera pas créé au même endroit) 
+>
+>- **Suppression d'une branche**
+>
+>   **`git branch --delete <branch_name>`**
