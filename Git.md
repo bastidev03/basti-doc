@@ -392,6 +392,12 @@ Cette fonction permet d'exécuter l'action inverse d'un commit antérieur pour e
 
 ### `git branch` : Visualiser / Créer / Supprimer des branches dans l'arbre de versionnage
 
+Quand une branche nouvelle est créée, c'est comme si l'arbre de révision complet de la branche courante était copié pour être affecté à cette nouvelle branche (Contrairement à SVN, Git est très optimisé et gère ça d'une manière très fluide et légère [Cf. documentation][git_doc_branch]).  
+Toute modification sur n'importe quel `commit` de cette branche n'affecte donc pas les autres branches (même sur leurs `commits` antérieurs communs).  
+Si une branche est `reset` sur un `commit` antérieur à sa création, cela n'affecte pas le/les `commits` équivalents dans la/les autre(s) branche(s). 
+
+[git_doc_branch]: <https://git-scm.com/book/fr/v2/Les-branches-avec-Git-Les-branches-en-bref> "Gestion des branches par Git"
+
 >### Syntaxes : 
 >
 >- **Visualisation des branches du projet en local**
@@ -408,13 +414,13 @@ Cette fonction permet d'exécuter l'action inverse d'un commit antérieur pour e
 >
 >- **Renommage d'une branche**
 >
->   **`git branch -m <source_branch_name> <target_branch_name>`**
+>   **`git branch --move <source_branch_name> <target_branch_name>`**
 >
 >    - Si **un seul** paramètre est spécifié, c'est la branche sur laquelle on se trouve qui sera renommée avec la valeur du paramètre
 >
 >- **Copie d'une branche**
 >
->   **`git branch -c <source_branch_name> <target_branch_name>`**
+>   **`git branch --copy <source_branch_name> <target_branch_name>`**
 >
 >    - Si un seul paramètre est spécifié, c'est la branche sur laquelle on se trouve qui sera copiée avec la valeur du paramètre
 >    - **Attention :** Ne pas confondre la copie d'une branche, avec la création d'une nouvelle branche à partir d'une autre (Le point de `fork` ne sera pas créé au même endroit) 
@@ -422,3 +428,7 @@ Cette fonction permet d'exécuter l'action inverse d'un commit antérieur pour e
 >- **Suppression d'une branche**
 >
 >   **`git branch --delete <branch_name>`**
+
+### `git switch` : Basculer d'une branche à une autre
+
+### `git merge` : Fusionner l'état d'une branche avec celui d'une autre
