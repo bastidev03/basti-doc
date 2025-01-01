@@ -382,9 +382,10 @@ Cette fonction permet d'exécuter l'action inverse d'un commit antérieur pour e
 >
 >-   **Annulation d'un commit de merge**
 >
->       **`git revert <commit_hash> -m <parent_number>`**
+>       **`git revert --mainline <parent_number> <commit_hash> --no-edit`**
 >
->       - TODO : Commande a tester pour RETEX (Définition de parent_number, modifications ultérieures non prises en compte)
+>       - **`<parent_number>`** correspond à l'index de l'élément (branche) parent du `merge` dont on veut **conserver** les modifications. **Les indexes commencent à 1**. 
+>       - **ATTENTION :** Si un autre `merge` ultérieur est effectué à partir de cette branche, les modifications présentes dans cette branche qui ont été `revert` précédemment, ne seront pas insérées dans ce nouveau `merge` (Git considère que ce sont des modifications "indésirables"). 
 
 <br/>
 
@@ -423,12 +424,60 @@ Si une branche est `reset` sur un `commit` antérieur à sa création, cela n'af
 >   **`git branch --copy <source_branch_name> <target_branch_name>`**
 >
 >    - Si un seul paramètre est spécifié, c'est la branche sur laquelle on se trouve qui sera copiée avec la valeur du paramètre
->    - **Attention :** Ne pas confondre la copie d'une branche, avec la création d'une nouvelle branche à partir d'une autre (Le point de `fork` ne sera pas créé au même endroit) 
 >
 >- **Suppression d'une branche**
 >
 >   **`git branch --delete <branch_name>`**
 
+<br/>
+
 ### `git switch` : Basculer d'une branche à une autre
 
+>### Syntaxes : 
+>
+>- **Changer de branche**
+>
+>   **`git switch <target_branch_name>`**
+
+<br/>
+
 ### `git merge` : Fusionner l'état d'une branche avec celui d'une autre
+
+La commande de `merge`, permet d'affecter les modifications d'une `branche source` vers une `branche cible`.  
+Les `commits` présents dans l'historique de la `branche source`, seront par la suite visibles également dans l'historique de la `branche cible`.  
+Selon la situation de l'arbre, `Git` peut effectuer **2 types de `merge` différents**, le `fast-forward merge` et le `3-way merge` ([Cf. documentation][git_merge_link]).
+
+[git_merge_link]: <https://www.atlassian.com/fr/git/tutorials/using-branches/git-merge>
+
+>### <u>**Attention :**</u>
+>
+> - **Toujours vérifier au préalable que l'on se trouve bien sur la `branche cible` avant de lancer une commande de `merge`.**
+
+>### Syntaxes :
+>
+> - **Fusionner 2 branches**
+>
+>   **`git merge <source_branch_name> --no-edit`**
+>   
+>   - Si il le peut, Git effectuera en priorité un `fast-forward merge`, sinon il fera un `3-way merge`.
+>   - Dans le cas d'un `3-way-merge`, le paramètre `no-edit` permet à git de générer un message automatique pour le commit. (C'est mieux, car ça évite l'ouverture d'un éditeur de message de commit qui ne fonctionne pas toujours très bien).
+>
+>
+> - **Fusionner 2 branches UNIQUEMENT en `fast-forward merge`**
+>
+>   **`git merge <source_branch_name> --ff-only`**
+>
+>   - Si le merge ne peut pas être exécuté en `fast-forward`, alors la commande parts en erreur.
+>
+> - **Fusionner 2 branches UNIQUEMENT en `3-way merge`**
+>
+>   **`git merge <source_branch_name> --no-ff --no-edit`**
+>
+> - **Fusionner 2 branches en `3-way merge` dont on veut personnaliser le message**
+>
+>   **`git merge <source_branch> --no-ff --no-commit`**
+>
+>   **`git commit -m "<message>"`**
+>
+>   - Les modifications se retrouvent `indexées` dans la révision courante
+>   - ça évite l'utilisation de l'éditeur de message défectueux
