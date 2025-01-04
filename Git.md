@@ -444,8 +444,17 @@ Si une branche est `reset` sur un `commit` antérieur à sa création, cela n'af
 ### `git merge` : Fusionner l'état d'une branche avec celui d'une autre
 
 La commande de `merge`, permet d'affecter les modifications d'une `branche source` vers une `branche cible`.  
-Les `commits` présents dans l'historique de la `branche source`, seront par la suite visibles également dans l'historique de la `branche cible`.  
-Selon la situation de l'arbre, `Git` peut effectuer **2 types de `merge` différents**, le `fast-forward merge` et le `3-way merge` ([Cf. documentation][git_merge_link]).
+Les `commits` présents dans l'historique de la `branche source`, seront par la suite visibles également dans l'historique de la `branche cible`.
+
+Selon la situation de l'arbre, `Git` peut effectuer **2 types de `merge` différents** ([Cf. documentation][git_merge_link]) : 
+
+1. Le `fast-forward merge` : Réalisable quand l'historique de la `branche cible` n'a pas encore divergé de celui de la `branche source` (La `branche source` est simplement en avance sur la `branche cible`).  
+   Dans ce cas là, le `pointeur/head` de la `branche cible` est simplement avancé au niveau de celui de la `branche source`.  
+   Aucun commit de merge n'est généré, et les modifications et commits de la `branche source` sont naturellement ajoutés dans l'historique de la `branche cible`. 
+
+2. Le `3-way merge` : Obligatoire quand l'historique de la `branche cible` a divergé de celui de la `branche source`.  
+   Les modifications de la `branche source` sont insérées dans la `branche cible` par le biais de l'ajout d'un commit de `merge` au niveau de son `pointeur/head`.  
+   On pourra ensuite observer dans l'historique de la `branche cible`, l'historique de la `branche source` issu de ce `merge`. (Un chemin parallèle est tracé si on le visualise avec `git log --graph`).
 
 [git_merge_link]: <https://www.atlassian.com/fr/git/tutorials/using-branches/git-merge>
 
@@ -462,7 +471,6 @@ Selon la situation de l'arbre, `Git` peut effectuer **2 types de `merge` différ
 >   - Si il le peut, Git effectuera en priorité un `fast-forward merge`, sinon il fera un `3-way merge`.
 >   - Dans le cas d'un `3-way-merge`, le paramètre `no-edit` permet à git de générer un message automatique pour le commit. (C'est mieux, car ça évite l'ouverture d'un éditeur de message de commit qui ne fonctionne pas toujours très bien).
 >
->
 > - **Fusionner 2 branches UNIQUEMENT en `fast-forward merge`**
 >
 >   **`git merge <source_branch_name> --ff-only`**
@@ -473,7 +481,7 @@ Selon la situation de l'arbre, `Git` peut effectuer **2 types de `merge` différ
 >
 >   **`git merge <source_branch_name> --no-ff --no-edit`**
 >
-> - **Fusionner 2 branches en `3-way merge` dont on veut personnaliser le message**
+> - **Fusionner 2 branches en `3-way merge` dont on veut personnaliser le message du commit**
 >
 >   **`git merge <source_branch> --no-ff --no-commit`**
 >
@@ -481,3 +489,9 @@ Selon la situation de l'arbre, `Git` peut effectuer **2 types de `merge` différ
 >
 >   - Les modifications se retrouvent `indexées` dans la révision courante
 >   - ça évite l'utilisation de l'éditeur de message défectueux
+>
+> - **Fusion partielle d'une `branche source` à partir d'un commit antérieur à son `pointeur/head`**
+>
+>   **`git merge <source_commit_hash>`**
+>
+>     - Tous les autres paramètres décrits précédemment sont utilisables
