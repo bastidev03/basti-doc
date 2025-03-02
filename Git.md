@@ -389,7 +389,7 @@ Cette fonction permet d'exécuter l'action inverse d'un commit antérieur pour e
 
 <br/>
 
-## Commandes de gestion des branches
+## Commandes de gestion des branches locales
 
 ### `git branch` : Visualiser / Créer / Supprimer des branches dans l'arbre de versionnage
 
@@ -495,3 +495,77 @@ Selon la situation de l'arbre, `Git` peut effectuer **2 types de `merge` différ
 >   **`git merge <source_commit_hash>`**
 >
 >     - Tous les autres paramètres décrits précédemment sont utilisables
+
+<br/>
+
+### `git stash` : TODO
+
+<br/>
+
+## Commandes de gestion des `repositories` distants
+
+Un `repository distant` est un `repository` git qui ne possède pas de copie/espace de travail à proprement parler, mais qui stocke l'arbre de versionnage complet du projet (Le contenu du .git stocké dans le/les projet(s) locaux)
+<br/>
+On appelle ça un **`bare-repository`**.
+
+><u>Remarques :</u>
+>  
+>- Les `repositories` distants stockés en ligne sur `GitHub` ou `GitLab`, sont des `bare-repositories`.
+>
+>- Il est tout à fait possible de créer des `repositories` distants en local. (A part pour faire des tests, ce n'est pas très utile)
+<br/> 
+
+### `git init` && `git clone` : Créer des `bare-repositories` qui serviront de `repositories` distants
+
+>### Syntaxes :
+>
+>- **Initialiser un bare-repository**
+>
+>   `git init --bare`
+>
+>- **Créer un bare-repository à partir d'un autre repository**
+>
+>   `git clone --bare <path_to_repo_to_clone>`
+
+<br/>
+
+### `git remote` : Gère les `repositories` distants liés au `repository` local
+
+>### Syntaxes :
+>
+>- **Visualiser tous les `repositories` distants liés au `repository` local**
+>
+>   **`git remote --verbose`**
+>
+>- **Afficher les détails d'un repository distant**
+>
+>   **`git remote show <repo_name>`**
+>   - C'est cette commande qui permet de savoir si notre repo local est à jour par rapport au repo distant ou si l'on est en avance ou en retard. 
+>
+>- **Ajouter un repository distant**
+>
+>   **`git remote add <repo_name> <repo_path || repo_url>`**
+>
+>- **Renommer un repository distant**
+>
+>   **`git remote rename <current_repo_name> <new_repo_name>`**
+>
+>- **Modifier l'URL d'un repository distant**
+>
+>   **`git remote set-url <repo_path || repo_url>`**
+>
+>- **Supprimer un repository distant**
+>
+>- **`git remove <repo_name>`**
+
+<br/>
+
+### `git fetch` : TODO
+
+<br/>
+
+### `git pull` : TODO
+
+<br/>
+
+### `git push` : TODO
