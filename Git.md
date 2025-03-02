@@ -408,6 +408,7 @@ Si une branche est `reset` sur un `commit` antérieur à sa création, cela n'af
 >- **Visualisation des branches du/des projet(s) distant(s)**
 >
 >   **`git branch --remotes`**
+>   - Affiche la liste des branches du/des repo(s) distant `trackées` en local (Dont on a fait un `fetch` au moins une fois) 
 >
 >- **Création d'une nouvelle branche à partir de l'endroit où l'on se trouve (branche et commit commit courant)**
 >
@@ -502,9 +503,9 @@ Selon la situation de l'arbre, `Git` peut effectuer **2 types de `merge` différ
 
 <br/>
 
-## Commandes de gestion des `repositories` distants
+## Commandes de gestion des `repositories distants`
 
-Un `repository distant` est un `repository` git qui ne possède pas de copie/espace de travail à proprement parler, mais qui stocke l'arbre de versionnage complet du projet (Le contenu du .git stocké dans le/les projet(s) locaux)
+Un **`repository distant`** est un `repository` git qui ne possède pas de copie/espace de travail à proprement parler, mais qui stocke l'arbre de versionnage complet du projet (Le contenu du .git stocké dans le/les projet(s) locaux)
 <br/>
 On appelle ça un **`bare-repository`**.
 
@@ -556,12 +557,34 @@ On appelle ça un **`bare-repository`**.
 >
 >- **Supprimer un repository distant**
 >
->- **`git remove <repo_name>`**
+>   **`git remove <repo_name>`**
 
 <br/>
 
-### `git fetch` : TODO
+### `git fetch` : Mettre à jour les évolutions d'une `branche distante` dans le `repository local`
 
+Une **`branche distante`** est une branche stockée au sein du `repository local` qui ne sert
+qu'à stocker les évolutions de la branche du **`repository distant`** qui lui est associé.
+
+Elles sont nommée de la façon suivante : `<remote_name>/<branch_name>` et sont visibles
+via la commande `git branch --remotes`.
+
+>### <u>Remarques :</u>  
+>
+>- Ces branches ne servent que de `tampon` pour stocker les éventuelles évolutions qui ont été faites
+sur le repo distant, afin de pouvoir les visualiser avant de les incorporer au sein d'une branche locale via un `git merge`.
+>
+>- Il est possible d'aller se positionner dessus via un `git switch <branch_name> --detach`, 
+mais il est impossible d'y affecter des commits (Read-Only), car le `HEAD` ne peut pas s'attacher à ces branches.
+
+>### Syntaxes :
+>
+>- **Mettre à jour une `branche distante` à partir de son `repository distant`** 
+>
+>   **`git fetch <remote_name> <branch_name>`**
+>   - Les évolutions sont stockées dans la `branche distante` `<remote_name>/<branch_name>`
+>   - On pourra ensuite les incorporer dans une branche locale via un `git merge`
+>   - La commande `git pull` permet d'effectuer ces 2 opérations d'un coup
 <br/>
 
 ### `git pull` : TODO
