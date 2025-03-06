@@ -20,7 +20,7 @@ Dans un terminal, saisir les commandes suivantes :
 symfony check:requirements
 
 # Commande de création du projet
-symfony new <project_name> --version="7.1.*" --php=8.3 --webapp --docker --cloud
+symfony new <project_name> --version="7.1.*" --php=8.3 (--demo) (--webapp) (--docker) (--cloud)
 ```
 
 ### Lancement du projet sur un serveur local et visualisation des logs d'accès
@@ -70,21 +70,43 @@ dump($var);
 ```
 ## Principaux Concepts et Classes/Namespaces prédéfinis
 
+>### <u>Attention :</u>
+>
+>Lorsqu'on définie une classe dans symfony dans l'arborescence du dossier de travail, **"src/dirname/filename.php"**, la classe doit obligatoirement être créée sous le namespace **"App\dirname"** et le nom de la classe doit être **"filename"** (Norme PSR-4), sinon le framework sortira une erreur (Non sensible à la casse).
+
 ### HTTP foundations
 
-> Groupement de Classes PHP pré-définies par `Symfony` pour gérer tout ce qui concerne les requêtes HTTP en POO :
-> - Récupération des données de requête de $_REQUEST, $_POST, $_FILES, ...
-> - Gestion des headers, sessions ...
-> - Génération des réponses renvoyées au client  
->
+ Groupement de Classes PHP pré-définies par `Symfony` pour gérer tout ce qui concerne les requêtes HTTP en POO :
+ - Récupération des données de requête de $_REQUEST, $_POST, $_FILES, ...
+ - Gestion des headers, sessions ...
+ - Génération des réponses renvoyées au client  
 
-Principales classes HTTP foundations :
+**Principales classes HTTP foundations :**
 ```php
 //Classe Response => Génère une réponse HTTP
 use Symfony\Component\HttpFoundation\Response;
 
 //Classe Request => Récupère une requête HTTP
 use Symfony\Component\HttpFoundation\Request;
+```
+
+### Attributs de Routes
+
+La classe `Route`, permet d'affecter un attribut de route à une méthode d'un `Controller`. Cette méthode, sera alors exécutée lorsqu'un appel HTTP sera fait sur cette route
+
+**Exemple d'implémentation :**
+```php
+<?php
+namespace App\Controller;
+use Symfony\Component\Routing\Attribute\Route;
+class MyController
+{
+    #[Route('/')]
+    public function sayHello()
+    {
+        die('Hello World');
+    }
+}
 ```
 
 ### Entities de l'ORM Doctrine
