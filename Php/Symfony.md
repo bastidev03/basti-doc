@@ -20,7 +20,7 @@ Dans un terminal, saisir les commandes suivantes :
 symfony check:requirements
 
 # Commande de création du projet
-symfony new <project_name> --version="7.1.*" --php=8.3 (--demo) (--webapp) (--docker) (--cloud)
+symfony new <project_name> --version="7.1.*" --php=8.4 (--demo) (--webapp) (--docker) (--cloud)
 ```
 
 ### Lancement du projet sur un serveur local et visualisation des logs d'accès
