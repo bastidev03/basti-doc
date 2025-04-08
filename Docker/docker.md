@@ -1,4 +1,4 @@
-# Introduction Docker
+# Introduction Docker ([Documentation officielle](https://docs.docker.com/))
 
 Docker permet d'exécuter des sources/applications dans un environnement isolé (`Environnement docker`) de la machine qui l'exécute que l'on appelle `Conteneur`.
 
@@ -13,4 +13,4 @@ Ce système de fichiers suit la même arborescence que celui d'un `environnement
 
 ![Image](./docker_architecture.jpeg)
 
-La commande client **`docker`** (`Docker CLI`) permet d'interagir avec le `démon Docker` qui gère en temps réel tout les objets qui composent l'environnement Docker en cours d'exécution (`conteneurs`, `images`, `volumes`,...).
+La commande client **`docker`** (`Docker CLI`) permet d'interagir avec le `démon Docker` qui gère en temps réel tout les objets qui composent l'environnement Docker en cours d'exécution (`conteneurs`, `images`, `volumes`, ...).
