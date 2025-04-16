@@ -19,9 +19,11 @@ La commande client **`docker`** (`Docker CLI`) permet d'interagir avec le `démo
 
 ## Image Docker
 
-Une `Image Docker`, est un `binaire` qui contient l'état et les données d'un système de fichiers spécifique, ainsi que les valeurs de certaines configurations systèmes (linux) spécifiques, et également une liste de commandes à exécuter au moment de l'instanciation de l'image dans un `Conteneur Docker` afin de lancer certains `services` (Un serveur web par exemple).  
+Une `Image Docker`, est un `binaire` qui contient l'état et les données d'un système de fichiers spécifique, ainsi que les valeurs de certaines configurations systèmes (linux) spécifiques qui seront instanciées au moment de l'instanciation de l'image dans un `Conteneur Docker` (Via la commande `docker create`).  
 
-Cette `image` est composée de plusieurs `couches` qui représentent une suite de modifications à apporter à ce système de fichiers ou à l'environnement OS (linux) du futur `Conteneur Docker` dans lequel elle sera instanciée (Un peu comme une suite de commits dans un arbre `Git`).
+L'`Image Docker` contient également une liste de commandes/fichiers à exécuter afin de lancer certains `services` (Un serveur web par exemple) au moment où le `Conteneur Docker` sera lancé (Via la commande `docker start`).  
+
+Cette `Image` est composée de plusieurs `couches` qui représentent une suite de modifications à apporter à ce système de fichiers ou à l'environnement OS (linux) du futur `Conteneur Docker` dans lequel elle sera instanciée (Un peu comme une suite de commits dans un arbre `Git`).
 
 Une `Image Docker` peut donc soit être créée de toutes pièces, soit être créée à partir d'une autre `Image Docker` (`Image perso` ou `Image officielle` téléchargée depuis [`Docker Hub`](https://hub.docker.com/)) à laquelle on ajoute nos propres couches personnelles.
 
