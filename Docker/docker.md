@@ -13,15 +13,15 @@ Ce système de fichiers suit la même arborescence que celui d'un `environnement
 
 ![Image](./docker_architecture.jpeg)
 
-La commande client **`docker`** (`Docker CLI`) permet d'interagir avec le `démon Docker` qui gère en temps réel tout les objets qui composent l'environnement Docker en cours d'exécution (`conteneurs`, `images`, `volumes`, ...).
+La commande client **`docker`** (`Docker CLI`) permet d'interagir avec le `démon Docker` qui gère en temps réel tous les objets qui composent l'environnement Docker en cours d'exécution (`conteneurs`, `images`, `volumes`, ...).
 
 # Concepts
 
 ## Image Docker
 
-Une `Image Docker`, est un `binaire` qui contient l'état et les données d'un système de fichiers spécifique, ainsi que les valeurs de certaines configurations systèmes (linux) spécifiques qui seront instanciées au moment de l'instanciation de l'image dans un `Conteneur Docker` (Via la commande `docker create`).  
+Une `Image Docker`, est un `binaire` qui contient l'état et les données d'un système de fichiers spécifique, ainsi que les valeurs de certaines configurations systèmes (linux) spécifiques qui seront instanciées au moment de l'instanciation de l'image dans un `Conteneur Docker` (`docker create` ou `docker run`).  
 
-L'`Image Docker` contient également une liste de commandes/fichiers à exécuter afin de lancer certains `services` (Un serveur web par exemple) au moment où le `Conteneur Docker` sera lancé (Via la commande `docker start`).  
+L'`Image Docker` contient également une liste de commandes/fichiers à exécuter afin de lancer certains `services` (Un serveur web par exemple) au moment où le `Conteneur Docker` sera lancé (`docker start` ou `docker run`).  
 
 Cette `Image` est composée de plusieurs `couches` qui représentent une suite de modifications à apporter à ce système de fichiers ou à l'environnement OS (linux) du futur `Conteneur Docker` dans lequel elle sera instanciée (Un peu comme une suite de commits dans un arbre `Git`).
 
@@ -38,7 +38,7 @@ Une `Image Docker` peut donc soit être créée de toutes pièces, soit être cr
 Un `Conteneur Docker` est un environnement système (basé sur linux) isolé du système de la machine sur lequel il se trouve (Une sorte de machine virtuelle légère).  
 En POO, on considérerait qu'un `Conteneur Docker` est une `instance` d'une `Image Docker` de laquelle il est issu.
 
-Un `Conteneur Docker`, une fois instancié, peut être démarré ou arrêté de la même façon qu'un démon/service applicatif.
+Un `Conteneur Docker`, une fois instancié, peut être démarré ou arrêté de la même façon qu'un démon/service applicatif (`Docker start`/`Docker stop`)
 
 Un `Conteneur Docker` peut communiquer avec l'extérieur en ouvrant des `ports` sur la machine locale. C'est ce que l'on appelle un **`port exposé`**.
 
@@ -46,4 +46,21 @@ Un `Conteneur Docker` peut également communiquer avec d'autres `Conteneurs` qui
 
 ## Volume Docker
 
-TODO
+Un `Volume Docker` est un disque virtuel qui permet de faire persister des données d'un ou plusieurs `conteneurs`.
+
+Il s'agit d'un "pont" entre, un `dossier physique` de la machine dans lequel les données du `volume` sont réellement stockées et, un `dossier interne` du `conteneur`, dans lequel les données du `volume` peuvent être manipulées par le `conteneur`.  
+
+Un même `Volume Docker` peut être partagé entre plusieurs conteneurs.
+
+>**!!! Important !!!**
+>
+>- L'association d'un `Volume Docker` à un `conteneur` se fait au moment de son instanciation (`Docker create` ou `Docker run`).
+>
+>- Si l'on souhaite ajouter d'autres `volumes` plus tard, il faudra ré-instancier le `conteneur` à partir de son image.
+
+<br/>
+
+# Principales commandes de Docker
+
+## Commandes de gestion des images Docker
+
