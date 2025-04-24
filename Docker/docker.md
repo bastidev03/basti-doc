@@ -23,15 +23,19 @@ Une `Image Docker`, est un `binaire` qui contient l'état et les données d'un s
 
 L'`Image Docker` contient également une liste de commandes/fichiers à exécuter afin de lancer certains `services` (Un serveur web par exemple) au moment où le `Conteneur Docker` sera lancé (`docker start` ou `docker run`).  
 
-Cette `Image` est composée de plusieurs `couches` qui représentent une suite de modifications à apporter à ce système de fichiers ou à l'environnement OS (linux) du futur `Conteneur Docker` dans lequel elle sera instanciée (Un peu comme une suite de commits dans un arbre `Git`).
+Cette `Image` est composée d'un empilement de `couches` qui représentent une suite de modifications à apporter à ce système de fichiers ou à l'environnement OS (linux) du futur `Conteneur Docker` dans lequel elle sera instanciée (Un peu comme une suite de commits dans un arbre `Git`).
 
-Une `Image Docker` peut donc soit être créée de toutes pièces, soit être créée à partir d'une autre `Image Docker` (`Image perso` ou `Image officielle` téléchargée depuis [`Docker Hub`](https://hub.docker.com/)) à laquelle on ajoute nos propres couches personnelles.
+Toutes les `Images Docker` ont pour couche de base, une couche que l'on appelle la **`couche scratch`** qui représente un système de fichiers vide.
+
+Une `Image Docker` peut ainsi être créée, soit à partir de cette `couche scratch` (via un `Dockerfile`), soit à partir d'une autre `Image Docker` (`Image perso` ou `Image officielle` téléchargée depuis [`Docker Hub`](https://hub.docker.com/)), dans laquelle seront ajoutées nos propres `couches` personnelles (Cas le plus commun).
 
 >**!!! Important !!!**
 > - Une `Image Docker` est **`immutable`** : Elle ne peut pas être modifiée par le `Conteneur` qui l'exécute
 >
 > - Si le `Conteneur`, durant son exécution, fait des modifications dans le système de fichier sur lequel il tourne, ces modifications seront supprimées dès que le `Conteneur` sera stoppé.  
 >Lorsqu'il sera redémarré, le système de fichier se retrouvera dans le même état que celui qui se trouve dans l'image
+>
+>- Pour sauvegarder des données, il faut utiliser des `volumes`
 
 ## Conteneur Docker
 
@@ -64,3 +68,38 @@ Un même `Volume Docker` peut être partagé entre plusieurs conteneurs.
 
 ## Commandes de gestion des images Docker
 
+### `docker images` : Monitorer les images présentes sur la machine hôte
+
+>### Syntaxe :
+>
+>- **Lister toutes les images**
+>
+>   **`docker images`** OU **`docker image ls`**
+
+<br/>
+
+### `docker pull` : Récupérer des images standard sur [Docker Hub](https://hub.docker.com/)
+
+>### Syntaxe :
+>
+>- **Récupérer une image sur Docker Hub**
+>
+>   **`docker pull <image_name>:<version>`**
+>
+>   - Si `<version>` n'est pas spécifié, c'est la dernière version (`:latest`) qui sera téléchargée
+
+<br/>
+
+## Commandes de gestion des Conteneurs Docker
+
+### `docker ps` : Monitorer les conteneurs  présents sur la machine hôte
+
+>### Syntaxe :
+>
+>- **Lister tous les conteneurs en cours d'exécution**
+>
+>   **`docker ps`** OU **`docker container ls`**
+>
+>- **Lister tous les conteneurs instanciés (même ceux à l'arrêt)**
+>
+>   **`docker ps -a`**
