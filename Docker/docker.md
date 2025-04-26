@@ -95,15 +95,33 @@ Un même `Volume Docker` peut être partagé entre plusieurs conteneurs.
 
 ### `docker build` : Créer une image à partir d'un Dockerfile
 
->### Syntaxe :
+>### Prérequis :
+>
+>**Avoir configuré un `Dockerfile` qui définie le process de construction de l'image à builder (cf. [`Doc Dockerfile`](./dockerfile.md))**
+
+>### Syntaxes :
 >
 >- **Créer une image à partir d'un Dockerfile**
 >
->   `docker build -t <image_name>:<image_tag>`
+>   **`docker build <root_dir_path> -t <image_name>:<image_tag>`**
 >
->   - Dans ce cas de figure, le Dockerfile doit se trouver dans le même dossier que celui où la commande est exécutée
+>   - **<root_dir_path> : Chemin relatif, depuis l'endroit où l'on exécute la commande, du dossier racine (référence) pour builder l'image**
 >
->   - <image_name> et <image_tag> sont optionnels
+>      - Par défaut, le builder va chercher à lire le `Dockerfile` présent à cet endroit (`<root_dir_path>/Dockerfile`)
+>
+>      - **Attention :** Tous les paths présents dans le `Dockerfile` qui référencent des `fichiers sources` à intégrer dans l'image (Instructions `ADD` ou `COPY`), doivent être des **`chemins absolus`** depuis ce `<root_dir_path>` (Raison pour laquelle il est recommandé de mettre les `Dockerfile` au niveau du `<root_dir_path>`que l'on a choisi).  
+>     
+>         Ces fichiers sources doivent **obligatoirement** se trouver **à l'intérieur** de l'arborescence qui a pour origine le `<root_dir_path>`, sinon le builder ne les trouvera pas. 
+>
+>   - <image_name> et <image_tag> sont tous les 2 optionnels
+> 
+><br/>
+>
+>- **Créer une image à partir d'un Dockerfile se trouvant à un endroit différent du <root_dir_path>**
+>
+>   **`docker build <root_dir_path> -f <dockerfile_path> -t <image_name>:<image_tag>`**
+>
+>      - <dockerfile_path> : Chemin relatif, depuis l'endroit où l'on exécute la commande, du `dockerfile` à utiliser.
 
 <br/>
 
