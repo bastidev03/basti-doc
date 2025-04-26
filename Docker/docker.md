@@ -27,7 +27,8 @@ Cette `Image` est composée d'un empilement de `couches` qui représentent une s
 
 Toutes les `Images Docker` ont pour couche de base, une couche que l'on appelle la **`couche scratch`** qui représente un système de fichiers vide.
 
-Une `Image Docker` peut ainsi être créée, soit à partir de cette `couche scratch` (via un `Dockerfile`), soit à partir d'une autre `Image Docker` (`Image perso` ou `Image officielle` téléchargée depuis [`Docker Hub`](https://hub.docker.com/)), dans laquelle seront ajoutées nos propres `couches` personnelles (Cas le plus commun).
+Une `Image Docker` peut ainsi être créée, soit à partir de cette `couche scratch` (via un `Dockerfile`), soit à partir d'une autre `Image Docker` (`Image perso` ou `Image officielle` téléchargée depuis [`Docker Hub`](https://hub.docker.com/)), dans laquelle seront ajoutées nos propres `couches` personnelles (Cas le plus commun).  
+Il est également possible de créer une `Image Docker` à partir d'une arborescence de dossiers/fichiers stockée dans une `archive TAR`, via la commande `docker import`.
 
 >**!!! Important !!!**
 > - Une `Image Docker` est **`immutable`** : Elle ne peut pas être modifiée par le `Conteneur` qui l'exécute
@@ -87,6 +88,49 @@ Un même `Volume Docker` peut être partagé entre plusieurs conteneurs.
 >   **`docker pull <image_name>:<version>`**
 >
 >   - Si `<version>` n'est pas spécifié, c'est la dernière version (`:latest`) qui sera téléchargée
+>
+>   - L'`image` sera ensuite chargée dans la mémoire interne du `dockerd` (Le démon/serveur docker)
+
+<br/>
+
+### `docker build` : Créer une image à partir d'un Dockerfile
+
+>### Syntaxe :
+>
+>- **Créer une image à partir d'un Dockerfile**
+>
+>   `docker build -t <image_name>:<image_tag>`
+>
+>   - Dans ce cas de figure, le Dockerfile doit se trouver dans le même dossier que celui où la commande est exécutée
+>
+>   - <image_name> et <image_tag> sont optionnels
+
+<br/>
+
+### `docker import` : Créer une image à partir d'une archive TAR
+
+**Commande utilisée pour créer une `image docker` directement depuis une arborescence dossier de la machine comme couche de base, sans avoir à se baser sur une image pré-existante de dockerHub.**
+
+>### Pré-requis :
+>
+> Mettre le contenu (fichiers/sous-dossiers) que l'on souhaite ajouter à l'image docker dans une archive TAR.
+
+
+>### Syntaxe :
+>
+>- **Créer une image simple à partir d'une archive TAR**
+>
+>   **`docker import "<source_path>.tar" -m "<commit_message>"`**
+>
+>   - Le <commit_message> est facultatif mais recommandé pour plus de clarté dans l'historique de l'image
+>
+>   - L'`image` sera ensuite chargée dans la mémoire interne du `dockerd` (Le démon/serveur docker)
+>
+>- **Créer une image en y ajoutant des instructions `Dockerfile`**
+>
+>   **`docker import "<source_path>.tar" -c "<Dockerfile_instructions>"`**
+>
+>   - Exemple de <Dockerfile_instruction> : `WORKDIR /` 
 
 <br/>
 
@@ -103,3 +147,25 @@ Un même `Volume Docker` peut être partagé entre plusieurs conteneurs.
 >- **Lister tous les conteneurs instanciés (même ceux à l'arrêt)**
 >
 >   **`docker ps -a`**
+
+<br/>
+
+### `docker export` : Exporter le contenu d'un conteneur
+
+**Commande utilisée pour inspecter le contenu d'un `conteneur` si l'on n'arrive pas à le démarrer.**
+
+>### Syntaxe :
+>
+>- **Exporter tous les fichiers d'un conteneur dans une archive TAR**
+>
+>   **`docker export <container_id> --output="<target_path>.tar"`**
+>
+>   - <container_id> : ID ou Nom du conteneur en question
+
+>### Remarques :
+>
+>- On peut ensuite utiliser cet `export` pour créer une nouvelle image docker à partir de celui-ci
+>
+>- **Attention :** si on fait ça, la nouvelle image créée repartira avec ce contenu comme nouvelle couche de base. Les potentielles couches intermédiaires présentes dans l'image utilisée pour instancier le conteneur original seront perdues (Tout comme l'historique de commit).
+>
+>- Si l'on ne veut pas perdre cet historique, utiliser la commande **`docker commit`** sur ce conteneur, ou **`docker save`** sur l'image originale.
