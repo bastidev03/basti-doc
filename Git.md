@@ -4,6 +4,13 @@
 
 ### `q` : Permet de sortir de l'interface d'une commande Git (Après un `git log` par ex)
 
+## Gestion des sessions gitHub/gitLab sur la machine locale
+
+### Sur Windows :
+> - Dans la liste des paramètres rechercher : Gestionnaire d'identification
+> - Aller dans l'item "Informations d'identification Windows"
+> - Ou alors, dans une console, taper la commande suivante : `rundll32.exe keymgr.dll,KRShowKeyMgr`
+
 ## Commandes globales  
 
 ### `git config` : Gérer les configurations par défaut de git (globalement ou localement)
